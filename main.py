@@ -1,6 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import os
+from dotenv import load_dotenv
+
+
+""" Copy and rename the secrets_env template in this repo to secrets.env.
+    Add your own login and password for https://myschool.pacyber.org"""
+load_dotenv('secrets.env')
 
 """ Your login information below. It's probably best to store this in environment variables."""
 tbLogin = os.environ.get('TBLOGIN')
@@ -45,7 +51,8 @@ def get_academic_snapshot():
          login_data, and headers for user agent."""
         r = s.post(url, data=login_data, headers=headers)
 
-        """Now we can scrape any url that requires a user to be logged in as long as we use the same session object 's' """
+        """Now we can scrape any url that requires a user to be logged in
+        as long as we use the same session object 's' """
         page = s.get(SCRAPEURL)
 
         bs = BeautifulSoup(page.content, 'html.parser')
