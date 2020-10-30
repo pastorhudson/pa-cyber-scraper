@@ -1,13 +1,18 @@
 # pa-cyber-scraper
-This project scrapes pa-cyber to tell me my son's current Academic Snapshot / Grades using a bot.
+This project scrapes https://myschool.pacyber.org to tell me my son's current Academic Snapshot / Grades.
+You can use this from the commandline or pipe the output into another script to send daily emails, txt, etc.
 
 ### Setup:
 - Clone this repo
     - `git clone https://github.com/pastorhudson/pa-cyber-scraper.git`
-- Edit secrets_env and save it as secrets.env
+- Edit `secrets_env` and save it as `secrets.env`
     - Edit the two fields replacing the xxxxx with your Username and Password
+    - `TBLOGIN='xxxxxxxxx'`
+    - `TBPASSWORD='xxxxxx'`
 - Install requirements
     - `pip install -r requirements.txt`
+    - Or individually:
+        - `pip install beautifulsoup4 python-dotenv requests`
 
 ### Run The Program
 - `python3 get_grades.py` 
