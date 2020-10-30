@@ -47,30 +47,29 @@ def get_academic_snapshot():
 
         """Now we can scrape any url that requires a user to be logged in as long as we use the same session object 's' """
         page = s.get(SCRAPEURL)
-        """ Add your own beautiful soup code below"""
+
         bs = BeautifulSoup(page.content, 'html.parser')
+
+        """ Grab the tables for the subjects and their corresponding info """
         mydivs = bs.findAll("div", {"class": "divinfo"})
-
-        # print(mydivs)
         table = mydivs[0].find(lambda tag: tag.name == 'table')
-
-        # print(table)
         rows = table.findAll(lambda tag: tag.name == 'span')
-        # print(rows)
         msg = ""
+
         for row in rows:
             try:
                 subject = row.find("div", {"class": "nicedivheader"}).text
-                msg += f"{subject}\n```"
+                msg += f"{subject}\n"
                 info = row.findAll("td", {"class": "labelhdr"})
                 for i in info:
                     msg += f"{i.text} {i.findNext('td').text}\n"
                     if i.text == 'Last Activity:':
-                        msg += "```\n"
+                        msg += "\n"
 
             except AttributeError as e:
                 pass
 
+        """I use this response txt in a bot so I can get an update on my son's progress very quickly."""
         return msg
 
 
