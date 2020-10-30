@@ -58,8 +58,12 @@ def get_academic_snapshot():
         bs = BeautifulSoup(page.content, 'html.parser')
 
         """ Grab the tables for the subjects and their corresponding info """
-        mydivs = bs.findAll("div", {"class": "divinfo"})
-        table = mydivs[0].find(lambda tag: tag.name == 'table')
+        try:
+            mydivs = bs.findAll("div", {"class": "divinfo"})
+            table = mydivs[0].find(lambda tag: tag.name == 'table')
+        except Exception as e:
+            return "Please Check your secrets.env and ensure your login and password are correctly set."
+
         rows = table.findAll(lambda tag: tag.name == 'span')
         msg = ""
 
