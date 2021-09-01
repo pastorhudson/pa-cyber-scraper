@@ -2,6 +2,8 @@
 This project scrapes https://myschool.pacyber.org to tell me my son's current Academic Snapshot / Grades.
 You can use this from the commandline or pipe the output into another script to send daily emails, txt, etc.
 
+There are two files get_grades.py which pulls from the "Academic Snapshot" page, and get_grades_book which pulls from the "Gradebook" page. I created the Gradebook version since some classes weren't showing on the Snapshot page.
+
 ### Setup:
 - Clone this repo
     - `git clone https://github.com/pastorhudson/pa-cyber-scraper.git`
@@ -15,7 +17,10 @@ You can use this from the commandline or pipe the output into another script to 
         - `pip install beautifulsoup4 python-dotenv requests`
 
 ### Run The Program
-- `python3 get_grades.py` 
+There are two files get_grades.py which pulls from the "Academic Snapshot" page, and get_grades_book which pulls from the "Gradebook" page. I created the Gradebook version since some classes weren't showing on the Snapshot page.
+
+- `python3 get_grades.py`
+- Or `python3 get_grades_book.py`
 - It will print out the Current academic snapshot.
 
 ```
