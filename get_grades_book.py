@@ -41,10 +41,12 @@ login_data = dict(__VIEWSTATE=None,
 def get_academic_snapshot():
     with requests.Session() as s:
         """Open a requests session, Store the correct auth headers."""
-        url = 'https://myschool.pacyber.org/Login.aspx' # Login URL
-        r = s.get(url, headers=headers) # This is where we make the first request to generate an authenticity_token
-        soup = BeautifulSoup(r.content, 'html.parser') # We're using Beautiful Soup to scrape the token form the page source
-        # """Here we are populating login_data dictionary with the scraped auth tokens"""
+        url = 'https://myschool.pacyber.org/Login.aspx'  # Login URL
+        r = s.get(url, headers=headers)  # This is where we make the first request to generate an authenticity_token
+        """We're using Beautiful Soup to scrape the token form the page source"""
+        soup = BeautifulSoup(r.content, 'html.parser')
+
+        """Here we are populating login_data dictionary with the scraped auth tokens"""
         login_data['__VIEWSTATE'] = soup.find('input', attrs={'name': '__VIEWSTATE'})['value']
         login_data['__VIEWSTATEGENERATOR'] = soup.find('input', attrs={'name': '__VIEWSTATEGENERATOR'})['value']
         login_data['__EVENTVALIDATION'] = soup.find('input', attrs={'name': '__EVENTVALIDATION'})['value']
@@ -64,6 +66,7 @@ def get_academic_snapshot():
             grade_book_rows = grade_book_table.findAll('tr')
 
         except Exception as e:
+            # If the above doesn't work there is a good chance it's because the password isn't correct.
             return "Please Check your secrets.env and ensure your login and password are correctly set."
 
         msg = ""
@@ -71,12 +74,13 @@ def get_academic_snapshot():
             td = row.find_all('td')
             row = [unicodedata.normalize("NFKD", i.text) for i in td]
             try:
-                msg += "\n".join([f"Subject: {row[2]}",
-                                  f"Score: {row[5].split(' ')[0] or None}",
-                                  f"Progress: {row[6]}",
+                msg += "\n".join([f"Subject: {row[2]}",  # Third Column
+                                  f"Score: {row[5].split(' ')[0] or None}",  # Fourth Column or 'None' if there isn't a grade yet
+                                  f"Progress: {row[6]}",  # Fifth Column
                                   "\n"])
-
             except IndexError:
+                """Some of the rows returned do not have data in the expected format. 
+                We don't need these so we just pass."""
                 pass
 
         return msg
